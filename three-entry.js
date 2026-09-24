@@ -69,7 +69,7 @@ const modelFactory=globalThis.wardrobeModel;
 
 let state={parts:[],actions:[],groups:new Map(),doorVisible:true,ghost:false};
 const $=id=>document.getElementById(id);
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x9ca8b2);scene.fog=new THREE.Fog(0x9ca8b2,900,1700);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xffffff);scene.fog=new THREE.Fog(0xffffff,900,1700);
 const camera=new THREE.PerspectiveCamera(35,1,.1,10000);camera.position.set(350,270,430);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;
 // Start in a true front elevation so the height/width proportions are readable.
@@ -77,7 +77,7 @@ const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.se
 const controls={target:new THREE.Vector3(0,120,0),theta:0,phi:1.45,radius:620,update(){const s=Math.sin(this.phi);camera.position.set(this.target.x+this.radius*s*Math.sin(this.theta),this.target.y+this.radius*Math.cos(this.phi),this.target.z+this.radius*s*Math.cos(this.theta));camera.lookAt(this.target);},reset(){this.theta=0;this.phi=1.45;this.radius=620;this.update();}};
 const root=new THREE.Group();scene.add(root);const ambient=new THREE.HemisphereLight(0xffffff,0x3d4650,2.2);scene.add(ambient);const key=new THREE.DirectionalLight(0xffffff,4.2);key.position.set(250,450,300);key.castShadow=true;scene.add(key);const fill=new THREE.DirectionalLight(0xdbe8f2,1.6);fill.position.set(-300,220,-180);scene.add(fill);
 const raycaster=new THREE.Raycaster(),pointerNdc=new THREE.Vector2();
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400),new THREE.MeshStandardMaterial({color:0x69727a,roughness:.88,metalness:.04}));floor.rotation.x=-Math.PI/2;floor.position.y=-1;floor.receiveShadow=true;scene.add(floor);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(1400,1400),new THREE.MeshStandardMaterial({color:0xffffff,roughness:1,metalness:0}));floor.rotation.x=-Math.PI/2;floor.position.y=-1;floor.receiveShadow=true;scene.add(floor);
 // Neutral white finish matching the requested wardrobe render. Slightly
 // different whites keep edges, backs and drawer interiors readable.
 const palette={body:0x596773,back:0x46515a,front:0x7f8c95,door:0x6f8290,drawer:0x527b9b,shoe:0x5f896f,shelf:0x9a7652,metal:0xb08a3c};
