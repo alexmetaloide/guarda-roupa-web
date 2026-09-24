@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guarda-roupa com portas de correr</title>
+  <style>:root{font-family:Arial,Helvetica,sans-serif;color:#202b36;background:#f1f4f7;font-size:14px}
+*{box-sizing:border-box}
+body{margin:0;padding-bottom:82px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 28px;background:#17324a;color:white}
+h1{font-size:22px;margin:0 0 5px}h2{font-size:17px;margin:0 0 16px}h3{font-size:14px;margin:0 0 12px}
+.topbar p{margin:0;color:#c9d7e1}.badge{border:1px solid #89aac0;border-radius:20px;padding:7px 12px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;padding:20px;align-items:start}
+.form-column{min-width:0}.card{background:#fff;border:1px solid #dce4ea;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px #17324a0b}
+.grid{display:grid;gap:14px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.side{min-width:0}.wide{grid-column:1/-1}
+label{display:flex;flex-direction:column;gap:6px;color:#334b5c;font-size:12px;font-weight:700}
+small{font-size:11px;color:#687c8a;font-weight:400}
+input,select{width:100%;border:1px solid #b9c9d4;border-radius:7px;padding:9px 10px;background:white;color:#203240;font:inherit;min-height:37px}
+input:focus,select:focus{outline:2px solid #3e8abe;outline-offset:1px}
+.subsection{border-top:1px solid #e6ecf0;margin:17px 0;padding-top:16px}
+.subsection:empty{display:none}.hint{font-size:12px;line-height:1.45;color:#5a6f7c;margin:14px 0 0}
+.preview-column{position:sticky;top:16px}.preview-card{margin-bottom:0}#preview svg{width:100%;height:auto;display:block}
+.compact{max-width:330px}
+.actions{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:flex-end;gap:10px;background:#fff;border-top:1px solid #d5e0e7;padding:13px 20px;box-shadow:0 -4px 12px #17324a12}
+#error{margin:0 auto 0 0;color:#b42318;font-size:12px;max-width:65%;font-weight:700}
+button{border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}
+button.primary{background:#1670a9;color:white}button.primary:hover{background:#0c5d90}
+button.secondary{background:#e8eff4;color:#2d4859}button.secondary:hover{background:#dbe7ee}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.preview-column{position:static}.sides{grid-template-columns:1fr}}
+@media(max-width:650px){.grid.three,.grid.two{grid-template-columns:1fr}.topbar{padding:18px}.layout{padding:12px}.card{padding:16px}}
+
+button:disabled{opacity:.5;cursor:not-allowed}.web-note{font-size:12px;line-height:1.5;color:#5a6f7c;margin:16px 2px}.web-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.web-tools button{font-size:12px}dialog{border:1px solid #c8d6e0;border-radius:12px;max-width:1250px;width:94vw;height:90vh;padding:0;color:#203240}dialog::backdrop{background:#17324a99}.cut-header{position:sticky;top:0;background:#17324a;color:white;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;z-index:2}.cut-header h2{margin:0}.cut-body{padding:24px}.cut-settings{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}.cut-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.cut-result{margin-top:20px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:12px}td,th{text-align:left;border-bottom:1px solid #dce4ea;padding:9px}th{background:#edf2f6}td input,td select{padding:5px;min-width:85px;font-size:12px}.sheet-card{margin:20px 0;padding:18px;border:1px solid #dce4ea;border-radius:8px;break-inside:avoid}.sheet-card svg{width:100%;max-height:430px}.cut-message{color:#b42318;font-weight:700;line-height:1.5}.cut-summary{padding:14px;background:#e8f2f8;border-radius:8px;line-height:1.7}.cut-settings label{font-size:13px}#cut-stale{color:#b42318}button:focus-visible{outline:3px solid #3e8abe;outline-offset:2px}@media(max-width:650px){.actions{flex-wrap:wrap}#error{max-width:100%;flex-basis:100%}body{padding-bottom:125px}.badge{white-space:normal}.cut-settings{grid-template-columns:1fr 1fr}.cut-body{padding:15px}.cut-header{padding:15px}}
+</style>
+<style>.view3d-card{margin-top:16px}.view3d-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}.view3d-heading h2{margin:0}.view3d-heading button{font-size:12px;padding:8px}#scene3d{height:350px;margin:15px -10px 0;background:#e8eef3;border-radius:8px;overflow:hidden;touch-action:none}#scene3d canvas{display:block;width:100%;height:100%}.view3d-toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.view3d-toolbar button{font-size:12px;padding:9px 10px}.view3d-options{display:flex;gap:12px;flex-wrap:wrap;margin-top:15px}.view3d-options label{flex-direction:row;align-items:center;font-weight:400}.view3d-options input{width:16px;min-height:16px;margin:0}.movement-list{margin-top:16px}.movement-list summary{cursor:pointer;font-weight:700;font-size:13px}.movement-row{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;padding-top:12px}.movement-row label{grid-column:1;font-size:12px}.movement-row button{grid-column:2;grid-row:1/3;font-size:12px;padding:8px;min-width:62px}.movement-row input{grid-column:1;width:100%;padding:0;min-height:20px;accent-color:#1670a9}.view3d-card.expanded{position:fixed;inset:12px;z-index:8;overflow:auto;margin:0;box-shadow:0 0 0 30px #17324a99}.view3d-card.expanded #scene3d{height:60vh;min-height:300px}.view3d-card.expanded #actions3d{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 20px}.preview-column{max-height:calc(100vh - 110px);overflow:auto;scrollbar-width:thin}@media(max-width:1050px){.preview-column{max-height:none;overflow:visible}#scene3d{height:440px}}@media(max-width:650px){#scene3d{height:360px}.view3d-card.expanded{inset:5px}.view3d-card.expanded #scene3d{height:50vh}.view3d-toolbar button{flex:1}}
+</style></head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Guarda-roupa com portas de correr</h1>
+      <p>Estrutura e interior dos dois módulos em uma única tela</p>
+    </div>
+    <span class="badge">Medidas em cm</span>
+  </header>
+  <main class="layout">
+    <div class="form-column">
+      <section class="card">
+        <h2>Estrutura</h2>
+        <div class="grid three">
+          <label>Largura total<input data-key="largura" type="number" min="1" step="0.1"></label>
+          <label>Altura total<input data-key="altura" type="number" min="1" step="0.1"></label>
+          <label>Profundidade total<input data-key="profundidade" type="number" min="1" step="0.1"></label>
+          <label>Espessura da estrutura<input data-key="esp_estrutura" type="number" min="0.1" step="0.1"></label>
+          <label>Espessura das prateleiras<select data-key="esp_prateleira"><option value="1.5">15 mm</option><option value="1.8">18 mm</option></select></label>
+          <label>Espessura do fundo<select data-key="esp_fundo"><option value="0.6">0,6 cm</option><option value="0.9">0,9 cm</option></select></label>
+          <label>Espessura das frentes e portas<select data-key="esp_frente"><option value="1.5">15 mm</option><option value="1.8">18 mm</option><option value="2">20 mm</option></select></label>
+          <label>Altura interna inferior<input data-key="altura_interna_inferior" type="number" min="1" step="0.1"></label>
+          <label>Recuo da lateral central<input data-key="diferenca_profundidade_laterais" type="number" min="0.1" step="0.1"></label>
+          <label>Altura da base integrada<input data-key="altura_base_integrada_guarda" type="number" min="0" step="0.1"></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Portas e trilhos de correr</h2>
+        <p class="hint">Quando ativadas: duas portas em dois planos, trilho superior 58 × 25 mm alinhado à frente e inferior 46,5 × 5,2 mm, 10 mm recuado sobre a base. Os perfis são simplificados; referência RO-46 com guia 4002 para portas de 15 a 20 mm. Sem portas, os trilhos também são omitidos.</p>
+        <div class="grid three">
+          <label>Criar portas de correr<select data-key="criar_portas_correr"><option>Sim</option><option>Não</option></select></label>
+          <label>Sobreposição das portas<input data-key="sobreposicao_portas_correr" type="number" min="0.1" step="0.1"></label>
+          <label>Folga vertical das portas<input data-key="folga_portas_correr" type="number" min="0" step="0.1"></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Gavetas, sapateiras e frentes</h2>
+        <div class="grid three">
+          <label>Recuo à esquerda<input data-key="recuo_gavetas_esquerda" type="number" min="0" step="0.1"></label>
+          <label>Recuo à direita<input data-key="recuo_gavetas_direita" type="number" min="0" step="0.1"></label>
+          <label>Recuo superior<input data-key="recuo_gavetas_superior" type="number" min="0" step="0.1"></label>
+          <label>Recuo inferior<input data-key="recuo_gavetas_inferior" type="number" min="0" step="0.1"></label>
+          <label>Folga entre frentes<input data-key="folga_entre_frentes_gavetas" type="number" min="0" step="0.1"></label>
+          <label>Corrediça<select data-key="tipo_corredica_gavetas" id="corredica"></select></label>
+          <label>Altura da frente da sapateira<input data-key="altura_frente_sapateira" type="number" min="6" max="8" step="0.1"></label>
+          <label>Espaçamento livre entre frentes<input data-key="espacamento_sapateira" type="number" min="8" step="0.1"></label>
+          <label>Fundo das sapateiras<select data-key="esp_fundo_sapateira"><option value="0.6">6 mm</option><option value="0.9">9 mm</option></select></label>
+        </div>
+        <p class="hint" id="comprimento_corredica_auto"></p>
+      </section>
+
+      <div class="sides">
+        <section class="card side" data-side="esquerda">
+          <h2>Lado esquerdo</h2>
+          <div class="grid two">
+            <label>Quantidade de gavetas<input data-key="quantidade_gavetas_esquerda" type="number" min="0" max="8" step="1"></label>
+            <label>Quantidade de sapateiras<input data-key="quantidade_sapateiras_esquerda" type="number" min="0" max="8" step="1"></label>
+            <label>Altura da caixaria<input data-key="altura_gaveteiro_esquerda" type="number" min="1" step="0.1"></label>
+            <label class="wide">Largura da caixaria <small>0 = largura automática do vão</small><input data-key="largura_gaveteiro_esquerda" type="number" min="0" step="0.1"></label>
+            <label>Engrosso na lateral esquerda<select data-key="engrosso_gaveteiro_esquerda_lateral_esquerda"><option>Não</option><option>Sim</option></select></label>
+            <label>Engrosso na lateral direita<select data-key="engrosso_gaveteiro_esquerda_lateral_direita"><option>Não</option><option>Sim</option></select></label>
+            <label>Espessura do engrosso<select data-key="esp_engrosso_gaveteiro_esquerda"><option value="1.5">15 mm</option><option value="1.8">18 mm</option></select></label>
+            <label>Espessura do tamponamento<select data-key="esp_tamponamento_gaveteiro_esquerda"><option value="1.5">15 mm</option><option value="1.8">18 mm</option></select></label>
+          </div>
+          <div class="subsection" id="secao_frentes_esquerda"><h3>Altura de cada frente</h3><p class="hint">Deixe vazio para dividir automaticamente a altura restante. Preencha apenas as frentes que terão medida fixa; o valor automático aparece em cinza.</p><div id="frentes_esquerda" class="grid two"></div></div>
+          <div class="grid two">
+            <label>Prateleiras<input data-key="quantidade_prateleiras_esquerda" type="number" min="0" max="8" step="1"></label>
+            <label>Varões<select data-key="modo_cabideiro_esquerda"><option>Nenhum</option><option>Superior</option><option>Dois varões</option></select></label>
+            <label>Colmeia<select data-key="criar_colmeia_esquerda"><option>Não</option><option>Sim</option></select></label>
+            <label>Vãos por nível<input data-key="vaos_colmeia_esquerda" type="number" min="2" max="6" step="1"></label>
+          </div>
+          <div class="subsection"><h3>Altura de cada prateleira <small>acima da base livre</small></h3><div id="prateleiras_esquerda" class="grid two"></div></div>
+          <div class="grid two">
+            <label>Varão superior <small>recuo sob o tampo</small><input data-key="recuo_varao_superior_esquerda" type="number" min="0.1" step="0.1"></label>
+            <label>Varão inferior <small>altura acima da base livre</small><input data-key="altura_varao_inferior_esquerda" type="number" min="0.1" step="0.1"></label>
+          </div>
+          <p class="hint" id="regra_esquerda"></p>
+        </section>
+
+        <section class="card side" data-side="direita">
+          <h2>Lado direito</h2>
+          <div class="grid two">
+            <label>Quantidade de gavetas<input data-key="quantidade_gavetas_direita" type="number" min="0" max="8" step="1"></label>
+            <label>Quantidade de sapateiras<input data-key="quantidade_sapateiras_direita" type="number" min="0" max="8" step="1"></label>
+            <label>Altura da caixaria<input data-key="altura_gaveteiro_direita" type="number" min="1" step="0.1"></label>
+            <label class="wide">Largura da caixaria <small>0 = largura automática do vão</small><input data-key="largura_gaveteiro_direita" type="number" min="0" step="0.1"></label>
+            <label>Engrosso na lateral esquerda<select data-key="engrosso_gaveteiro_direita_lateral_esquerda"><option>Não</option><option>Sim</option></select></label>
+            <label>Engrosso na lateral direita<select data-key="engrosso_gaveteiro_direita_lateral_direita"><option>Não</option><option>Sim</option></select></label>
+            <label>Espessura do engrosso<select data-key="esp_engrosso_gaveteiro_direita"><option value="1.5">15 mm</option><option value="1.8">18 mm</option></select></label>
+            <label>Espessura do tamponamento<select data-key="esp_tamponamento_gaveteiro_direita"><option value="1.5">15 mm</option><option value="1.8">18 mm</option></select></label>
+          </div>
+          <div class="subsection" id="secao_frentes_direita"><h3>Altura de cada frente</h3><p class="hint">Deixe vazio para dividir automaticamente a altura restante. Preencha apenas as frentes que terão medida fixa; o valor automático aparece em cinza.</p><div id="frentes_direita" class="grid two"></div></div>
+          <div class="grid two">
+            <label>Prateleiras<input data-key="quantidade_prateleiras_direita" type="number" min="0" max="8" step="1"></label>
+            <label>Varões<select data-key="modo_cabideiro_direita"><option>Nenhum</option><option>Superior</option><option>Dois varões</option></select></label>
+            <label>Colmeia<select data-key="criar_colmeia_direita"><option>Não</option><option>Sim</option></select></label>
+            <label>Vãos por nível<input data-key="vaos_colmeia_direita" type="number" min="2" max="6" step="1"></label>
+          </div>
+          <div class="subsection"><h3>Altura de cada prateleira <small>acima da base livre</small></h3><div id="prateleiras_direita" class="grid two"></div></div>
+          <div class="grid two">
+            <label>Varão superior <small>recuo sob o tampo</small><input data-key="recuo_varao_superior_direita" type="number" min="0.1" step="0.1"></label>
+            <label>Varão inferior <small>altura acima da base livre</small><input data-key="altura_varao_inferior_direita" type="number" min="0.1" step="0.1"></label>
+          </div>
+          <p class="hint" id="regra_direita"></p>
+        </section>
+      </div>
+      <section class="card compact"><label>Diâmetro dos varões<input data-key="diametro_cabideiro" type="number" min="0.1" step="0.1"></label></section>
+    </div>
+
+    <aside class="preview-column">
+      <div class="card preview-card">
+        <h2>Prévia frontal</h2>
+        <div id="preview" role="img" aria-label="Prévia frontal do guarda-roupa"></div>
+        <p class="hint">A prévia mostra o interior, como no plugin. No SketchUp, as duas portas e os trilhos são gerados no recuo frontal da estrutura.</p>
+      </div>
+    <section class="card view3d-card" aria-labelledby="view3d-title">
+ <div class="view3d-heading"><h2 id="view3d-title">Prévia 3D interativa</h2><button class="secondary" id="expand3d">Ampliar</button></div>
+ <div id="scene3d" tabindex="0" role="img" aria-label="Modelo 3D do guarda-roupa. Arraste para girar e use os controles abaixo para abrir as peças."></div>
+ <p id="scene3d-status" role="status" class="hint">Preparando a prévia 3D…</p>
+ <div class="view3d-toolbar" aria-label="Câmera 3D"><button id="front3d" class="secondary">Frente</button><button id="angle3d" class="secondary">Perspectiva</button><button id="zoom-in3d" class="secondary" aria-label="Aproximar modelo">＋</button><button id="zoom-out3d" class="secondary" aria-label="Afastar modelo">−</button></div>
+ <div class="view3d-options"><label><input type="checkbox" id="hide-doors3d"> Ocultar portas</label><label><input type="checkbox" id="ghost3d"> Caixaria transparente</label></div>
+ <div class="view3d-toolbar"><button class="secondary" id="open-drawers3d">Abrir gavetas e sapateiras</button><button class="secondary" id="close-all3d">Fechar tudo</button></div>
+ <details class="movement-list" open><summary>Portas, gavetas e sapateiras</summary><div id="actions3d"></div></details>
+ <p class="hint">Arraste para girar · Roda do mouse ou pinça para zoom · Botão direito para deslocar. Clique em uma porta ou frente para abrir e fechar. Os controles também funcionam pelo teclado.</p>
+ <p class="hint">Prévia baseada nas medidas do módulo. Espessuras alteradas apenas na lista de corte não mudam este modelo. Movimentos ilustrativos, sem simulação de colisões ou dimensionamento das ferragens.</p>
+</section>
+<div class="web-tools"><button class="secondary" id="importar">Abrir projeto</button><button class="primary" id="abrir-corte">Plano de corte</button><input id="arquivo" type="file" accept=".json,application/json" hidden></div><p class="web-note">Versão web · plugin 2.9.38. Salve e reabra a configuração neste editor. Não gera SKP nem altera o SketchUp.</p><p id="status" class="web-note" role="status"></p></aside>
+  </main>
+  <footer class="actions">
+    <p id="error" role="alert"></p>
+    <button type="button" class="secondary" id="cancelar">Restaurar padrão</button>
+    <button type="button" class="primary" id="salvar">Salvar projeto</button>
+  </footer>
+  <script>const INITIAL_STATE = {"esp_fundo":0.6,"opcoes_corredica":["Telescópica - folga total 27 mm","Oculta - folga total 10 mm"],"largura":200,"altura":265,"profundidade":60,"esp_estrutura":1.5,"esp_frente":1.5,"esp_prateleira":1.5,"altura_interna_inferior":195,"diferenca_profundidade_laterais":7,"altura_base_integrada_guarda":5,"quantidade_gavetas_esquerda":0,"quantidade_gavetas_direita":0,"quantidade_sapateiras_esquerda":0,"quantidade_sapateiras_direita":0,"altura_frente_sapateira":7,"esp_fundo_sapateira":0.6,"espacamento_sapateira":8,"altura_gaveteiro_esquerda":90,"altura_gaveteiro_direita":90,"engrosso_gaveteiro_esquerda_lateral_esquerda":"Não","engrosso_gaveteiro_esquerda_lateral_direita":"Não","engrosso_gaveteiro_direita_lateral_esquerda":"Não","engrosso_gaveteiro_direita_lateral_direita":"Não","esp_engrosso_gaveteiro_esquerda":1.5,"esp_engrosso_gaveteiro_direita":1.5,"esp_tamponamento_gaveteiro_esquerda":1.5,"esp_tamponamento_gaveteiro_direita":1.5,"largura_gaveteiro_esquerda":0,"largura_gaveteiro_direita":0,"alturas_frentes_esquerda":[],"alturas_frentes_direita":[],"alturas_frentes_manuais_esquerda":[],"alturas_frentes_manuais_direita":[],"recuo_gavetas_esquerda":0.4,"recuo_gavetas_direita":0.4,"recuo_gavetas_superior":0,"recuo_gavetas_inferior":1,"folga_entre_frentes_gavetas":0.4,"tipo_corredica_gavetas":"Telescópica - folga total 27 mm","quantidade_prateleiras_esquerda":0,"quantidade_prateleiras_direita":0,"criar_colmeia_esquerda":"Não","criar_colmeia_direita":"Não","vaos_colmeia_esquerda":2,"vaos_colmeia_direita":2,"alturas_prateleiras_esquerda":[],"alturas_prateleiras_direita":[],"modo_cabideiro_esquerda":"Nenhum","modo_cabideiro_direita":"Nenhum","recuo_varao_superior_esquerda":9.5,"recuo_varao_superior_direita":9.5,"altura_varao_inferior_esquerda":90,"altura_varao_inferior_direita":90,"diametro_cabideiro":2.5,"criar_portas_correr":"Sim","sobreposicao_portas_correr":3,"folga_portas_correr":0.4};</script>
+  <script>const DEFAULTS=structuredClone(INITIAL_STATE);
+function validate(d){
+ const n=k=>Number(d[k]),e=n('esp_estrutura'),h=n('altura_interna_inferior'),w=n('largura')/2-2*e,p=n('profundidade')-n('esp_fundo')-n('diferenca_profundidade_laterais'),s=n('esp_prateleira');
+ for(const el of document.querySelectorAll('input[type=number][data-key]'))if(!el.disabled&&(!el.value.trim()||!el.checkValidity()))return 'Revise o campo '+el.parentElement.childNodes[0].textContent.trim()+'.';
+ if(n('altura')-n('altura_base_integrada_guarda')-h-4*e<=2*e)return 'A altura total não deixa espaço suficiente para o maleiro.';
+ if(w<=0)return 'A largura total é insuficiente para os dois módulos.';
+ if(p<=0)return 'A profundidade não comporta a diferença entre as laterais e o fundo.';
+ if(d.criar_portas_correr==='Sim'){
+  if(n('sobreposicao_portas_correr')>=(n('largura')-2*e)/2)return 'A sobreposição das portas de correr é muito grande.';
+  if(n('diferenca_profundidade_laterais')<5.8)return 'O recuo das laterais centrais não comporta o trilho superior de 58 mm.';
+  if(n('altura')-n('altura_base_integrada_guarda')-2*e-3<=50)return 'Os trilhos e folgas não deixam altura para as portas.';
+ }
+ const diameter=n('diametro_cabideiro');if(diameter>=p)return 'O diâmetro do varão não cabe na profundidade livre.';
+ for(const side of ['esquerda','direita']){
+  const has=n('quantidade_gavetas_'+side)+n('quantidade_sapateiras_'+side)>0,cabinet=has?n('altura_gaveteiro_'+side):0,free=h-cabinet;
+  const thick=['esquerda','direita'].filter(l=>d['engrosso_gaveteiro_'+side+'_lateral_'+l]==='Sim').length,cap=thick?n('esp_tamponamento_gaveteiro_'+side):0,cw=n('largura_gaveteiro_'+side)||w;
+  if(has){
+   if(cabinet-cap<=2*e)return 'O gaveteiro '+side+' não comporta o tamponamento.';
+   if(cw>w||cw<=4*e)return 'A largura do gaveteiro '+side+' não cabe no vão livre.';
+   if(cw-thick*n('esp_engrosso_gaveteiro_'+side)<=4*e)return 'O engrosso não deixa largura suficiente para o gaveteiro '+side+'.';
+   if(p<=n('esp_frente')+27)return 'A profundidade recuada não comporta uma gaveta com corrediça.';
+   const rec=['esquerda','direita'].reduce((v,l)=>v+(d['engrosso_gaveteiro_'+side+'_lateral_'+l]==='Sim'?n('esp_engrosso_gaveteiro_'+side):n('recuo_gavetas_'+l)),0);
+   if(rec>=cw)return 'Os recuos laterais das frentes ocupam o gaveteiro '+side+'.';
+  }
+  if(free<=e)return 'O gaveteiro '+side+' não deixa espaço para o interior.';
+  const shelves=(d['alturas_prateleiras_'+side]||[]).map(Number);
+  if(d['criar_colmeia_'+side]==='Sim'){const cols=n('vaos_colmeia_'+side);if((free-shelves.length*s)/(shelves.length+1)<=s||(w-(cols-1)*s)/cols<=s)return 'A colmeia '+side+' não cabe com essa quantidade de prateleiras e vãos.';}
+  let prev=0;for(const z of shelves){if(!Number.isFinite(z)||z<=prev+s||z+s>=free)return 'Uma prateleira do lado '+side+' não cabe no espaço livre.';prev=z;}
+  const mode=d['modo_cabideiro_'+side],r=diameter/2;
+  if(mode!=='Nenhum'){
+   const upper=free-n('recuo_varao_superior_'+side),positions=[upper];if(upper<=r||upper+r>=free)return 'O varão superior do lado '+side+' não cabe na altura livre.';
+   if(mode==='Dois varões'){const lower=n('altura_varao_inferior_'+side);if(lower<=r||lower+r>=upper-r)return 'O varão inferior do lado '+side+' deve ficar abaixo do superior e dentro do vão.';positions.push(lower);}
+   if(shelves.some(z=>positions.some(v=>v+r>z&&v-r<z+s)))return 'Uma prateleira do lado '+side+' colide com o varão.';
+  }
+ }
+ return '';
+}
+function saveBlob(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
+function downloadProject(data){const issue=validate(data);if(issue){window.showError(issue);return;}saveBlob(new Blob([JSON.stringify({formato:'metalloide-guarda-roupa-web',versao:1,plugin:'2.9.38',unidade:'cm',parametros:data,corte:window.readCutSettings?.()},null,2)],{type:'application/json'}),'guarda-roupa.json');document.getElementById('status').textContent='Projeto exportado. Use Abrir projeto para continuar a edição.';}
+function resetProject(){if(confirm('Restaurar os valores padrão do plugin? As alterações atuais serão descartadas.')){window.applyConfiguration(structuredClone(DEFAULTS));document.getElementById('status').textContent='Valores padrão restaurados.';}}
+function setupWeb(){
+ const input=document.getElementById('arquivo');document.getElementById('importar').onclick=()=>input.click();
+ input.onchange=async()=>{try{
+  const file=input.files[0];if(!file)return;if(file.size>200000)throw Error('Arquivo muito grande. Abra um projeto exportado por este editor.');
+  const saved=JSON.parse(await file.text());if(saved.formato!=='metalloide-guarda-roupa-web'||saved.versao!==1||saved.unidade!=='cm'||!saved.parametros)throw Error('Selecione um projeto JSON exportado por este editor.');
+  const data=saved.parametros;
+  for(const [key,initial] of Object.entries(DEFAULTS)){
+   if(key==='opcoes_corredica')continue;const v=data[key];
+   if(Array.isArray(initial)){if(!Array.isArray(v)||v.length>8||v.some(item=>!Number.isFinite(Number(item))))throw Error('Valores inválidos em '+key);}
+   else if(typeof initial==='number'){if(v===''||!Number.isFinite(Number(v)))throw Error('Medida inválida em '+key);}
+   else {const field=document.querySelector('[data-key="'+key+'"]');if(field?.tagName==='SELECT'&&![...field.options].some(o=>o.value===String(v)))throw Error('Opção inválida em '+key);}
+  }
+  window.applyConfiguration(data);if(saved.corte)window.applyCutSettings(saved.corte);document.getElementById('status').textContent='Projeto aberto. Confira as medidas e eventuais avisos.';
+ }catch(error){window.showError(error.message);}finally{input.value='';}};
+}
+
+(function(){
+  const sides=['esquerda','direita'];
+  const $=id=>document.getElementById(id);
+  const number=value=>{const n=Number(String(value??'').replace(',','.'));return Number.isFinite(n)?n:0};
+  const round=value=>Math.round(value*10)/10;
+  const field=key=>document.querySelector('[data-key="'+key+'"]');
+  const value=key=>field(key)?.value;
+  const count=key=>Math.max(0,Math.min(8,Math.trunc(number(value(key)))));
+  const shoeCount=side=>count('quantidade_sapateiras_'+side);
+  const shoeSpacing=()=>number(value('espacamento_sapateira'));
+  const capThickness=side=>
+    value('engrosso_gaveteiro_'+side+'_lateral_esquerda')==='Sim'||
+    value('engrosso_gaveteiro_'+side+'_lateral_direita')==='Sim'?
+      number(value('esp_tamponamento_gaveteiro_'+side)):0;
+  const state=INITIAL_STATE;
+
+  document.querySelectorAll('[data-key]').forEach(el=>{
+    const initial=state[el.dataset.key];
+    if(initial!==undefined&&initial!==null)el.value=String(initial).replace(',','.');
+  });
+  const slide=field('tipo_corredica_gavetas');
+  slide.innerHTML='';
+  state.opcoes_corredica.forEach(option=>{
+    const el=document.createElement('option');el.value=option;el.textContent=option;slide.appendChild(el);
+  });
+  slide.value=state.tipo_corredica_gavetas;
+
+  function rowInputs(id){return [...$(id).querySelectorAll('input')];}
+  function readRows(id){return rowInputs(id).map(input=>input.value||input.dataset.computed||'');}
+  function frontUsable(side,n){
+    const cap=capThickness(side);
+    const shoes=shoeCount(side);
+    const shoeZone=shoes?number(value('recuo_gavetas_inferior'))+
+      shoes*number(value('altura_frente_sapateira'))+
+      Math.max(0,shoes-1)*shoeSpacing()+(n?shoeSpacing():0):0;
+    return number(value('altura_gaveteiro_'+side))-shoeZone-
+      number(value('recuo_gavetas_superior'))-(shoes?0:number(value('recuo_gavetas_inferior')))-
+      Math.max(0,n-1)*number(value('folga_entre_frentes_gavetas'))-cap-(cap>0?0.4:0);
+  }
+  function recalculateFronts(side){
+    const inputs=rowInputs('frentes_'+side),automatic=inputs.filter(input=>!input.value.trim());
+    const fixed=inputs.reduce((sum,input)=>sum+(input.value.trim()?number(input.value):0),0);
+    let remaining=round(frontUsable(side,inputs.length)-fixed);
+    automatic.forEach((input,index)=>{
+      const height=index===automatic.length-1?remaining:round(remaining/(automatic.length-index));
+      remaining=round(remaining-height);
+      input.dataset.computed=String(height);
+      input.placeholder=height>0?String(height).replace('.',',')+' cm (auto)':'Sem espaço';
+    });
+    inputs.filter(input=>input.value.trim()).forEach(input=>{delete input.dataset.computed;});
+  }
+  function frontIssue(side){
+    {
+      const n=shoeCount(side),drawers=count('quantidade_gavetas_'+side);
+      if(!n)return frontIssueDrawer(side);
+      const front=number(value('altura_frente_sapateira'));
+      if(front<6||front>8)return 'A frente da sapateira deve medir de 6 a 8 cm.';
+      const shoeGap=drawers?shoeSpacing():(number(value('altura_gaveteiro_'+side))-capThickness(side)-
+        2*number(value('esp_estrutura'))-number(value('recuo_gavetas_inferior'))-n*front)/n;
+      if(shoeGap<shoeSpacing())
+        return 'O espaço calculado para as sapateiras do lado '+side+' ficou abaixo do valor definido. Reduza a quantidade ou aumente a caixaria.';
+    }
+    return frontIssueDrawer(side);
+  }
+  function frontIssueDrawer(side){
+    const inputs=rowInputs('frentes_'+side);
+    if(!inputs.length)return '';
+    recalculateFronts(side);
+    const usable=frontUsable(side,inputs.length);
+    const heights=inputs.map(input=>number(input.value||input.dataset.computed));
+    const hasAutomatic=inputs.some(input=>!input.value.trim());
+    const fixed=inputs.reduce((sum,input)=>sum+(input.value.trim()?number(input.value):0),0);
+    const min=2*number(value('esp_estrutura'))+4;
+    if(heights.some(height=>height<=min))
+      return 'As frentes do lado '+side+' precisam ter mais de '+round(min)+' cm.';
+    if(fixed>usable+0.11)
+      return 'As alturas fixas das frentes do lado '+side+' ultrapassam o espaço disponível.';
+    if(!hasAutomatic&&Math.abs(heights.reduce((sum,height)=>sum+height,0)-usable)>0.11)
+      return 'Deixe pelo menos uma frente do lado '+side+' vazia para completar a altura automaticamente, ou ajuste as alturas fixas para fechar o gaveteiro.';
+    return '';
+  }
+  function renderRows(side,kind){
+    const key=(kind==='frentes'?'quantidade_gavetas_':'quantidade_prateleiras_')+side;
+    const n=count(key),id=kind+'_'+side,old=rowInputs(id).map(input=>input.value);
+    const saved=Array.isArray(state['alturas_'+kind+'_'+side])?state['alturas_'+kind+'_'+side]:[];
+    const savedManual=state['alturas_frentes_manuais_'+side];
+    let suggested=[];
+    const free=number(value('altura_interna_inferior'))-
+      (count('quantidade_gavetas_'+side)+shoeCount(side)>0?number(value('altura_gaveteiro_'+side)):0);
+    const autoShelves=kind==='prateleiras'&&
+      (value('criar_colmeia_'+side)==='Sim'||count('quantidade_gavetas_'+side)+shoeCount(side)>0);
+    if(kind==='frentes'){
+      const usable=frontUsable(side,n);
+      const each=n>0?round(usable/n):0;
+      suggested=Array.from({length:n},(_,i)=>i===n-1?round(usable-each*(n-1)):each);
+    }else{
+      if(autoShelves){
+        const thickness=number(value('esp_prateleira'));
+        const gap=(free-n*thickness)/(n+1);
+        suggested=Array.from({length:n},(_,i)=>round((i+1)*gap+i*thickness));
+      }else{
+        suggested=Array.from({length:n},(_,i)=>round((i+1)*free/(n+1)));
+      }
+    }
+    const container=$(id);container.replaceChildren();
+    for(let i=0;i<n;i++){
+      const label=document.createElement('label');
+      label.textContent=(kind==='frentes'?'Frente ':'Prateleira ')+(i+1)+(autoShelves?' (auto)':'');
+      const input=document.createElement('input');input.type='number';input.min='0.1';input.step='0.1';
+      if(kind==='frentes'){
+        const savedValue=String(saved[i]??'').replace(',','.');
+        const wasManual=Array.isArray(savedManual)&&savedManual.length===n?savedManual[i]==='1':
+          (savedValue!==''&&Math.abs(number(savedValue)-number(suggested[i]))>0.11);
+        input.value=old[i]??(wasManual?savedValue:'');
+      }else{
+        input.value=autoShelves?
+          String(suggested[i]):(old[i]??String(saved[i]??suggested[i]).replace(',','.'));
+      }
+      input.disabled=autoShelves;
+      input.addEventListener('input',()=>{if(kind==='frentes')recalculateFronts(side);drawPreview();});
+      label.appendChild(input);container.appendChild(label);
+    }
+    if(kind==='frentes')recalculateFronts(side);
+  }
+
+  function applyRules(side){
+    const drawers=count('quantidade_gavetas_'+side),shoes=shoeCount(side),shelves=count('quantidade_prateleiras_'+side);
+    $('secao_frentes_'+side).hidden=drawers===0;
+    const engrossoEsq=field('engrosso_gaveteiro_'+side+'_lateral_esquerda');
+    const engrossoDir=field('engrosso_gaveteiro_'+side+'_lateral_direita');
+    if(drawers+shoes===0){engrossoEsq.value='Não';engrossoDir.value='Não';}
+    engrossoEsq.disabled=drawers+shoes===0;
+    engrossoDir.disabled=drawers+shoes===0;
+    field('esp_engrosso_gaveteiro_'+side).disabled=
+      drawers+shoes===0||(engrossoEsq.value!=='Sim'&&engrossoDir.value!=='Sim');
+    field('esp_tamponamento_gaveteiro_'+side).disabled=
+      drawers+shoes===0||(engrossoEsq.value!=='Sim'&&engrossoDir.value!=='Sim');
+    const colmeia=value('criar_colmeia_'+side)==='Sim';
+    const select=field('modo_cabideiro_'+side),blocked=colmeia||((drawers+shoes)>0&&shelves>0);
+    if(blocked)select.value='Nenhum';
+    select.disabled=blocked;
+    $('regra_'+side).textContent=colmeia?
+      'Vãos iguais calculados automaticamente; varões desligados neste lado.':
+      (blocked?'Varões desligados: este lado tem gaveteiro ou sapateiras e prateleiras.':'');
+    if(shoes>0){
+      const gap=drawers?shoeSpacing():(number(value('altura_gaveteiro_'+side))-capThickness(side)-
+        2*number(value('esp_estrutura'))-number(value('recuo_gavetas_inferior'))-
+        shoes*number(value('altura_frente_sapateira')))/shoes;
+      $('regra_'+side).textContent+=' Sapateiras embaixo; vão livre calculado de '+round(gap)+' cm.';
+    }
+    field('vaos_colmeia_'+side).disabled=!colmeia;
+    const rods=select.value;
+    field('recuo_varao_superior_'+side).disabled=blocked||rods==='Nenhum';
+    field('altura_varao_inferior_'+side).disabled=blocked||rods!=='Dois varões';
+  }
+
+  function svgRect(x,y,w,h,fill,stroke='#648094'){
+    return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+Math.max(1,h)+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.4"/>';
+  }
+  function drawPreview(){
+    const doors=value('criar_portas_correr')!=='Não';
+    field('sobreposicao_portas_correr').disabled=!doors;
+    field('folga_portas_correr').disabled=!doors;
+    field('recuo_gavetas_inferior').min=doors?'1':'0';
+    sides.forEach(applyRules);
+    sides.forEach(recalculateFronts);
+    const cabinetDepth=number(value('profundidade'))-number(value('esp_fundo'))-
+      number(value('diferenca_profundidade_laterais'))-number(value('esp_frente'));
+    const minRearGap=String(value('tipo_corredica_gavetas')).toLowerCase().includes('oculta')?1.5:2;
+    const usefulDepth=cabinetDepth-minRearGap;
+    const slideLength=[25,30,35,40,45,60].filter(length=>length<=usefulDepth).pop();
+    $('comprimento_corredica_auto').textContent=slideLength?
+      'Comprimento automático da corrediça: '+slideLength+' cm. Folga atrás da gaveta: '+
+        round(cabinetDepth-slideLength)+' cm.':
+      'A profundidade não comporta uma corrediça de 25 cm.';
+    const total=Math.max(1,number(value('altura'))),scale=320/total;
+    const bottom=355,top=bottom-total*scale;
+    const base=number(value('altura_base_integrada_guarda'));
+    const inner=Math.max(0,number(value('altura_interna_inferior')));
+    const thickness=number(value('esp_estrutura'));
+    const zTop=base+thickness+inner;
+    const yOf=z=>bottom-z*scale;
+    let svg='<svg viewBox="0 0 300 390" xmlns="http://www.w3.org/2000/svg">';
+    svg+=svgRect(23,top,254,total*scale,'#f7fbfd','#24475c');
+    svg+='<line x1="150" x2="150" y1="'+top+'" y2="'+bottom+'" stroke="#24475c" stroke-width="3"/>';
+    svg+='<line x1="23" x2="277" y1="'+yOf(zTop)+'" y2="'+yOf(zTop)+'" stroke="#24475c" stroke-width="3"/>';
+    svg+='<line x1="23" x2="277" y1="'+yOf(base)+'" y2="'+yOf(base)+'" stroke="#24475c" stroke-width="3"/>';
+    sides.forEach((side,index)=>{
+      const x=index===0?27:154,w=119;
+      const drawers=count('quantidade_gavetas_'+side),shoes=shoeCount(side),shelves=count('quantidade_prateleiras_'+side);
+      const cabinet=drawers+shoes?number(value('altura_gaveteiro_'+side)):0;
+      const freeBase=base+thickness+cabinet;
+      if(drawers||shoes){
+        const y=yOf(freeBase);
+        svg+=svgRect(x,y,w,cabinet*scale,'#e4eef5');
+        if(value('engrosso_gaveteiro_'+side+'_lateral_esquerda')==='Sim')
+          svg+=svgRect(x,y,4,cabinet*scale,'#b28761','#785535');
+        if(value('engrosso_gaveteiro_'+side+'_lateral_direita')==='Sim')
+          svg+=svgRect(x+w-4,y,4,cabinet*scale,'#b28761','#785535');
+        const cap=capThickness(side);
+        if(cap>0)svg+=svgRect(x,y,w,Math.max(2,cap*scale),'#b28761','#785535');
+        if(shoes){
+          const h=number(value('altura_frente_sapateira'));
+          const shoeGap=drawers?shoeSpacing():(cabinet-cap-2*thickness-
+            number(value('recuo_gavetas_inferior'))-shoes*h)/shoes;
+          let z=base+thickness+number(value('recuo_gavetas_inferior'));
+          for(let i=0;i<shoes;i++){
+            svg+=svgRect(x+4,yOf(z+h),w-8,h*scale,'#b3d4bd','#47775a');
+            z+=h+shoeGap;
+          }
+        }
+        if(drawers){
+          const hs=readRows('frentes_'+side).map(number);
+          let z=freeBase-number(value('recuo_gavetas_superior'))-cap-(cap>0?0.4:0);
+          hs.forEach(h=>{z-=h;svg+=svgRect(x+4,yOf(z+h),w-8,h*scale,'#93b7cf','#426b85');z-=number(value('folga_entre_frentes_gavetas'));});
+        }
+      }
+      readRows('prateleiras_'+side).slice(0,shelves).forEach(raw=>{
+        const z=freeBase+number(raw);
+        svg+=svgRect(x+2,yOf(z),w-4,Math.max(2,number(value('esp_prateleira'))*scale),'#c89e71','#8d6641');
+      });
+      if(value('criar_colmeia_'+side)==='Sim'){
+        const columns=count('vaos_colmeia_'+side);
+        const gap=(inner-cabinet-shelves*number(value('esp_prateleira')))/(shelves+1);
+        const left=x+2,usable=w-4;
+        for(let level=0;level<=shelves;level++){
+          const z=freeBase+level*(gap+number(value('esp_prateleira')));
+          for(let divider=1;divider<columns;divider++){
+            const vx=left+divider*usable/columns-2;
+            svg+=svgRect(vx,yOf(z+gap),4,gap*scale,'#c89e71','#8d6641');
+          }
+        }
+      }
+      const mode=value('modo_cabideiro_'+side);
+      if(mode!=='Nenhum'){
+        const upper=zTop-number(value('recuo_varao_superior_'+side));
+        svg+='<line x1="'+(x+11)+'" x2="'+(x+w-11)+'" y1="'+yOf(upper)+'" y2="'+yOf(upper)+'" stroke="#49747a" stroke-width="5" stroke-linecap="round"/>';
+        if(mode==='Dois varões'){
+          const lower=freeBase+number(value('altura_varao_inferior_'+side));
+          svg+='<line x1="'+(x+11)+'" x2="'+(x+w-11)+'" y1="'+yOf(lower)+'" y2="'+yOf(lower)+'" stroke="#49747a" stroke-width="5" stroke-linecap="round"/>';
+        }
+      }
+      svg+='<text x="'+(x+w/2)+'" y="375" text-anchor="middle" fill="#456176" font-size="12">'+
+        (side==='esquerda'?'Esquerda':'Direita')+'</text>';
+    });
+    svg+='</svg>';
+    $('preview').innerHTML=svg;
+    $('error').textContent=validate(collect())||sides.map(frontIssue).find(Boolean)||'';
+    $('salvar').disabled=!!$('error').textContent;
+    if(window.invalidateCut)window.invalidateCut();
+  }
+
+  function collect(){
+    const data={};document.querySelectorAll('[data-key]').forEach(el=>data[el.dataset.key]=el.value);
+    sides.forEach(side=>{data['alturas_frentes_'+side]=readRows('frentes_'+side);data['alturas_frentes_manuais_'+side]=rowInputs('frentes_'+side).map(el=>el.value.trim()?'1':'0');data['alturas_prateleiras_'+side]=readRows('prateleiras_'+side);});return data;
+  }
+  window.applyConfiguration=function(data){
+    Object.keys(state).forEach(key=>{if(data[key]!==undefined)state[key]=data[key];});
+    document.querySelectorAll('[data-key]').forEach(el=>{if(state[el.dataset.key]!==undefined)el.value=String(state[el.dataset.key]);});
+    sides.forEach(side=>{['frentes','prateleiras'].forEach(kind=>$(kind+'_'+side).replaceChildren());renderRows(side,'frentes');renderRows(side,'prateleiras');});drawPreview();
+  };
+  window.getConfiguration=collect;
+  sides.forEach(side=>{renderRows(side,'frentes');renderRows(side,'prateleiras');});
+  document.querySelectorAll('[data-key]').forEach(el=>{
+    el.addEventListener('input',()=>{
+      const key=el.dataset.key;
+      if(key.startsWith('quantidade_gavetas_')){renderRows(key.split('_').pop(),'frentes');renderRows(key.split('_').pop(),'prateleiras');}
+      if(key.startsWith('quantidade_sapateiras_')){
+        const side=key.split('_').pop();renderRows(side,'frentes');renderRows(side,'prateleiras');
+      }
+      if(key.startsWith('engrosso_gaveteiro_')||key.startsWith('esp_engrosso_gaveteiro_')||
+          key.startsWith('esp_tamponamento_gaveteiro_')||
+          key.startsWith('altura_gaveteiro_')){
+        const side=key.includes('gaveteiro_esquerda')?'esquerda':'direita';
+        renderRows(side,'frentes');
+      }
+      if(['recuo_gavetas_superior','recuo_gavetas_inferior',
+          'folga_entre_frentes_gavetas'].includes(key))
+        sides.forEach(recalculateFronts);
+      if(key.startsWith('quantidade_prateleiras_')||key.startsWith('criar_colmeia_'))
+        renderRows(key.split('_').pop(),'prateleiras');
+      if(key==='altura_interna_inferior'||key==='esp_prateleira'||
+          key.startsWith('altura_gaveteiro_'))
+        sides.forEach(side=>{if(value('criar_colmeia_'+side)==='Sim'||
+          count('quantidade_gavetas_'+side)+shoeCount(side)>0)renderRows(side,'prateleiras');});
+      drawPreview();
+    });
+    el.addEventListener('change',drawPreview);
+  });
+  drawPreview();
+
+  window.showError=function(message){$('error').textContent=String(message);};
+  $('cancelar').addEventListener('click',()=>window.resetProject());
+  $('salvar').addEventListener('click',()=>{
+    const issue=sides.map(frontIssue).find(Boolean);
+    if(issue){$('error').textContent=issue;return;}
+    const data={};
+    document.querySelectorAll('[data-key]').forEach(el=>{data[el.dataset.key]=el.value;});
+    sides.forEach(side=>{
+      data['alturas_frentes_'+side]=readRows('frentes_'+side);
+      data['alturas_frentes_manuais_'+side]=
+        rowInputs('frentes_'+side).map(input=>input.value.trim()?'1':'0');
+      data['alturas_prateleiras_'+side]=readRows('prateleiras_'+side);
+    });
+    $('error').textContent='';
+    window.downloadProject(data);
+  });
+})();
+</script>
+<dialog id="cut-dialog" aria-labelledby="cut-title"><div class="cut-header"><h2 id="cut-title">Plano de corte</h2><button id="close-cut" aria-label="Fechar plano de corte">Fechar</button></div><div class="cut-body">
+<p>Peças calculadas a partir do guarda-roupa. Medidas do plano em <strong>milímetros</strong>.</p>
+<div class="grid cut-settings">
+<label>Comprimento da chapa (mm)<input id="sheet-l" type="number" value="2750" min="100" max="10000" step="0.1"></label>
+<label>Largura da chapa (mm)<input id="sheet-w" type="number" value="1850" min="100" max="10000" step="0.1"></label>
+<label>Espessura da serra (mm)<input id="kerf" type="number" value="3" min="0" max="20" step="0.1"></label>
+<label>Refilo por borda (mm)<input id="margin" type="number" value="10" min="0" max="100" step="0.1"></label>
+<label>Material da estrutura<input id="mat-body" value="MDF branco" maxlength="40"></label>
+<label>Material das frentes e portas<input id="mat-front" value="MDF branco" maxlength="40"></label>
+<label>Material dos fundos<input id="mat-back" value="MDF branco" maxlength="40"></label>
+<label>Sentido do veio<select id="grain"><option value="free">Sem veio: permite girar 90°</option><option value="locked">Respeitar comprimento de cada peça</option></select></label>
+</div>
+<p class="hint">Chapas separadas por material e espessura. Distribuição por cortes guilhotinados, com serra e refilo; o resultado não garante o menor número possível de chapas. Com veio, o comprimento da peça acompanha o comprimento da chapa.</p>
+<p class="hint">Gavetas seguem os padrões internos do plugin: laterais de 15 mm, fundo de 6 mm, rasgo de 10 mm e sobra inferior de 12 mm. Sapateiras usam o fundo selecionado. Dimensões nominais, sem desconto de fita de borda; rasgos e furações exigem operações separadas.</p>
+<h3>1. Aplique o MDF nas peças</h3><p class="hint">Escolha 6, 9, 15, 18 ou 25 mm por peça antes de distribuir nas chapas. Alterações aqui definem a espessura de corte e preservam comprimento e largura; ajuste as medidas e encaixes no módulo quando necessário. O material é escolhido acima por grupo.</p><div id="parts-editor" class="table-wrap"></div>
+<h3 style="margin-top:24px">2. Distribua as peças e imprima</h3>
+<div class="cut-actions"><button id="generate-cut" class="primary">Gerar plano de corte</button><button id="download-pdf" class="primary" disabled>Salvar PDF para imprimir</button><button id="download-csv" class="secondary" disabled>Exportar lista CSV</button></div>
+<p id="cut-error" class="cut-message" role="alert"></p><p id="cut-stale" role="status"></p><div id="cut-result" class="cut-result"></div>
+</div></dialog>
+<script src="pdf-lib.min.js"></script><script src="cut.js"></script><script type="module" src="three-entry.js"></script></body>
+</html>
