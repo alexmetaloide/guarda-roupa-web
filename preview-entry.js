@@ -94,19 +94,19 @@ function makeNoiseTexture(base='#ffffff',variation=10,size=384,grain=false){
  ctx.putImageData(image,0,0);const tex=new THREE.CanvasTexture(canvas);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(4,4);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return tex;
 }
 const textures={
- mdf:makeNoiseTexture('#6e777d',7,384,false),
- back:makeNoiseTexture('#565e63',6,384,false),
- front:makeNoiseTexture('#8b8278',6,384,false),
- door:makeNoiseTexture('#706b67',5,384,false),
- drawer:makeNoiseTexture('#606b72',7,384,false),
- shoe:makeNoiseTexture('#59635d',7,384,false),
- shelf:makeNoiseTexture('#8b6549',10,512,true),
+ mdf:makeNoiseTexture('#f4f4f1',7,512,false),
+ back:makeNoiseTexture('#efefeb',6,512,false),
+ front:makeNoiseTexture('#f8f8f5',6,512,false),
+ door:makeNoiseTexture('#f6f6f3',6,512,false),
+ drawer:makeNoiseTexture('#f2f2ef',7,512,false),
+ shoe:makeNoiseTexture('#f1f1ee',7,512,false),
+ shelf:makeNoiseTexture('#f5f5f2',7,512,false),
  floor:makeNoiseTexture('#d8d2c7',11,512,false)
 };
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(1800,1800),new THREE.MeshPhysicalMaterial({color:0xd8d2c7,map:textures.floor,roughness:.9,metalness:0,clearcoat:0}));floor.rotation.x=-Math.PI/2;floor.position.y=-.7;floor.receiveShadow=true;scene.add(floor);
-const palette={body:0x6e777d,back:0x565e63,front:0x8b8278,door:0x706b67,drawer:0x606b72,shoe:0x59635d,shelf:0x8b6549,metal:0xb9bec2};
+const palette={body:0xffffff,back:0xf9f9f6,front:0xffffff,door:0xffffff,drawer:0xfdfdfb,shoe:0xfcfcfa,shelf:0xffffff,metal:0xb9bec2};
 function materialKind(p){if(p.shape==='rod'||p.material==='metal')return'metal';if(p.action?.startsWith('gaveta'))return'drawer';if(p.action?.startsWith('sapateira'))return'shoe';if(/Prateleira|Colmeia/i.test(p.name||''))return'shelf';if(p.material==='back')return'back';if(p.material==='door')return'door';if(p.material==='front')return'front';return'mdf';}
-function materialFor(p){const kind=materialKind(p);if(kind==='metal')return new THREE.MeshPhysicalMaterial({color:palette.metal,metalness:.92,roughness:.2,clearcoat:.2,clearcoatRoughness:.14});const map=textures[kind]||textures.mdf;const color=kind==='mdf'?palette.body:palette[kind]||palette.body;const shelf=kind==='shelf';return new THREE.MeshPhysicalMaterial({color,map,metalness:0,roughness:shelf?.52:.62,clearcoat:shelf?.14:.08,clearcoatRoughness:.38,ior:1.46,sheen:shelf?.08:.035,sheenRoughness:.72});}
+function materialFor(p){const kind=materialKind(p);if(kind==='metal')return new THREE.MeshPhysicalMaterial({color:palette.metal,metalness:.92,roughness:.2,clearcoat:.2,clearcoatRoughness:.14});const map=textures[kind]||textures.mdf;const color=kind==='mdf'?palette.body:palette[kind]||palette.body;const front=/^(front|door)$/.test(kind);return new THREE.MeshPhysicalMaterial({color,map,metalness:0,roughness:front?.46:.58,clearcoat:front?.16:.07,clearcoatRoughness:.34,ior:1.46,sheen:.025,sheenRoughness:.78});}
 function resize(){const box=$('scene3d').getBoundingClientRect();if(!box.width)return;renderer.setSize(box.width,box.height,false);camera.aspect=box.width/box.height;camera.updateProjectionMatrix();}function colorFor(p){if(p.action?.startsWith('gaveta'))return palette.drawer;if(p.action?.startsWith('sapateira'))return palette.shoe;if(/Prateleira|Colmeia/i.test(p.name||''))return palette.shelf;return palette[p.material]||palette.body;}
 function makePart(p){if(p.shape==='rod'){const geo=new THREE.CylinderGeometry(p.diameter/2,p.diameter/2,p.length,36);const mesh=new THREE.Mesh(geo,materialFor(p));mesh.rotation.z=Math.PI/2;mesh.position.set(p.x+p.length/2,p.y,p.z);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;}const geo=new THREE.BoxGeometry(p.w,p.h,p.depth);const mat=materialFor(p);mat.transparent=p.material==='back';mat.opacity=1;const mesh=new THREE.Mesh(geo,mat);mesh.position.set(p.x+p.w/2,p.y+p.h/2,p.z+p.depth/2);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;}
 function clear(){while(root.children.length)root.remove(root.children[0]);state.groups.clear();}
