@@ -69,7 +69,7 @@ const modelFactory=globalThis.wardrobeModel;
 
 let state={parts:[],actions:[],groups:new Map(),doorVisible:true,ghost:false,exporting4k:false};
 const $=id=>document.getElementById(id);
-const scene=new THREE.Scene();scene.background=new THREE.Color(0xf2f0eb);scene.fog=new THREE.Fog(0xf2f0eb,1100,2200);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xf3f4f5);scene.fog=new THREE.Fog(0xf3f4f5,1100,2200);
 const camera=new THREE.PerspectiveCamera(35,1,.1,10000);camera.position.set(350,270,430);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance',preserveDrawingBuffer:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2.5));
@@ -77,15 +77,15 @@ renderer.shadowMap.enabled=true;
 renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.08;
+renderer.toneMappingExposure=1.35;
 // Start in a true front elevation so the height/width proportions are readable.
 // Perspective remains available through the dedicated camera button.
 const controls={target:new THREE.Vector3(0,120,0),theta:0,phi:1.45,radius:620,update(){const s=Math.sin(this.phi);camera.position.set(this.target.x+this.radius*s*Math.sin(this.theta),this.target.y+this.radius*Math.cos(this.phi),this.target.z+this.radius*s*Math.cos(this.theta));camera.lookAt(this.target);},reset(){this.theta=0;this.phi=1.45;this.radius=620;this.update();}};
 const root=new THREE.Group();scene.add(root);
-const ambient=new THREE.HemisphereLight(0xfffbf2,0x6d7378,1.55);scene.add(ambient);
-const key=new THREE.DirectionalLight(0xfff4df,3.7);key.position.set(300,520,360);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=20;key.shadow.camera.far=1800;key.shadow.camera.left=-520;key.shadow.camera.right=520;key.shadow.camera.top=520;key.shadow.camera.bottom=-520;key.shadow.bias=-0.00035;scene.add(key);
-const fill=new THREE.DirectionalLight(0xd8e8f8,1.35);fill.position.set(-360,260,160);scene.add(fill);
-const rim=new THREE.DirectionalLight(0xffffff,1.05);rim.position.set(160,330,-360);scene.add(rim);
+const ambient=new THREE.HemisphereLight(0xffffff,0xdde1e4,2.25);scene.add(ambient);
+const key=new THREE.DirectionalLight(0xfffbf2,3.35);key.position.set(300,520,360);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=20;key.shadow.camera.far=1800;key.shadow.camera.left=-520;key.shadow.camera.right=520;key.shadow.camera.top=520;key.shadow.camera.bottom=-520;key.shadow.bias=-0.00035;scene.add(key);
+const fill=new THREE.DirectionalLight(0xf2f7ff,1.9);fill.position.set(-360,260,160);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,.85);rim.position.set(160,330,-360);scene.add(rim);
 const raycaster=new THREE.Raycaster(),pointerNdc=new THREE.Vector2();
 function makeNoiseTexture(base='#ffffff',variation=10,size=384,grain=false){
  const canvas=document.createElement('canvas');canvas.width=canvas.height=size;const ctx=canvas.getContext('2d');ctx.fillStyle=base;ctx.fillRect(0,0,size,size);
@@ -94,19 +94,19 @@ function makeNoiseTexture(base='#ffffff',variation=10,size=384,grain=false){
  ctx.putImageData(image,0,0);const tex=new THREE.CanvasTexture(canvas);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(4,4);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return tex;
 }
 const textures={
- mdf:makeNoiseTexture('#f4f4f1',7,512,false),
- back:makeNoiseTexture('#efefeb',6,512,false),
- front:makeNoiseTexture('#f8f8f5',6,512,false),
- door:makeNoiseTexture('#f6f6f3',6,512,false),
- drawer:makeNoiseTexture('#f2f2ef',7,512,false),
- shoe:makeNoiseTexture('#f1f1ee',7,512,false),
- shelf:makeNoiseTexture('#f5f5f2',7,512,false),
+ mdf:makeNoiseTexture('#ffffff',3,512,false),
+ back:makeNoiseTexture('#fbfbfa',3,512,false),
+ front:makeNoiseTexture('#ffffff',2.5,512,false),
+ door:makeNoiseTexture('#ffffff',2.5,512,false),
+ drawer:makeNoiseTexture('#fefefd',3,512,false),
+ shoe:makeNoiseTexture('#fdfdfc',3,512,false),
+ shelf:makeNoiseTexture('#ffffff',3,512,false),
  floor:makeNoiseTexture('#d8d2c7',11,512,false)
 };
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(1800,1800),new THREE.MeshPhysicalMaterial({color:0xd8d2c7,map:textures.floor,roughness:.9,metalness:0,clearcoat:0}));floor.rotation.x=-Math.PI/2;floor.position.y=-.7;floor.receiveShadow=true;scene.add(floor);
-const palette={body:0xffffff,back:0xf9f9f6,front:0xffffff,door:0xffffff,drawer:0xfdfdfb,shoe:0xfcfcfa,shelf:0xffffff,metal:0xb9bec2};
+const palette={body:0xffffff,back:0xffffff,front:0xffffff,door:0xffffff,drawer:0xffffff,shoe:0xffffff,shelf:0xffffff,metal:0xb9bec2};
 function materialKind(p){if(p.shape==='rod'||p.material==='metal')return'metal';if(p.action?.startsWith('gaveta'))return'drawer';if(p.action?.startsWith('sapateira'))return'shoe';if(/Prateleira|Colmeia/i.test(p.name||''))return'shelf';if(p.material==='back')return'back';if(p.material==='door')return'door';if(p.material==='front')return'front';return'mdf';}
-function materialFor(p){const kind=materialKind(p);if(kind==='metal')return new THREE.MeshPhysicalMaterial({color:palette.metal,metalness:.92,roughness:.2,clearcoat:.2,clearcoatRoughness:.14});const map=textures[kind]||textures.mdf;const color=kind==='mdf'?palette.body:palette[kind]||palette.body;const front=/^(front|door)$/.test(kind);return new THREE.MeshPhysicalMaterial({color,map,metalness:0,roughness:front?.46:.58,clearcoat:front?.16:.07,clearcoatRoughness:.34,ior:1.46,sheen:.025,sheenRoughness:.78});}
+function materialFor(p){const kind=materialKind(p);if(kind==='metal')return new THREE.MeshPhysicalMaterial({color:palette.metal,metalness:.92,roughness:.2,clearcoat:.2,clearcoatRoughness:.14});const map=textures[kind]||textures.mdf;const color=kind==='mdf'?palette.body:palette[kind]||palette.body;const front=/^(front|door)$/.test(kind);return new THREE.MeshPhysicalMaterial({color,map,metalness:0,roughness:front?.5:.64,clearcoat:front?.1:.035,clearcoatRoughness:.4,ior:1.46,sheen:.015,sheenRoughness:.82});}
 function resize(){const box=$('scene3d').getBoundingClientRect();if(!box.width)return;renderer.setSize(box.width,box.height,false);camera.aspect=box.width/box.height;camera.updateProjectionMatrix();}function colorFor(p){if(p.action?.startsWith('gaveta'))return palette.drawer;if(p.action?.startsWith('sapateira'))return palette.shoe;if(/Prateleira|Colmeia/i.test(p.name||''))return palette.shelf;return palette[p.material]||palette.body;}
 function makePart(p){if(p.shape==='rod'){const geo=new THREE.CylinderGeometry(p.diameter/2,p.diameter/2,p.length,36);const mesh=new THREE.Mesh(geo,materialFor(p));mesh.rotation.z=Math.PI/2;mesh.position.set(p.x+p.length/2,p.y,p.z);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;}const geo=new THREE.BoxGeometry(p.w,p.h,p.depth);const mat=materialFor(p);mat.transparent=p.material==='back';mat.opacity=1;const mesh=new THREE.Mesh(geo,mat);mesh.position.set(p.x+p.w/2,p.y+p.h/2,p.z+p.depth/2);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;}
 function clear(){while(root.children.length)root.remove(root.children[0]);state.groups.clear();}
