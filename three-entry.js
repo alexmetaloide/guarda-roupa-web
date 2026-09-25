@@ -69,7 +69,7 @@ const modelFactory=globalThis.wardrobeModel;
 
 let state={parts:[],actions:[],groups:new Map(),doorVisible:true,ghost:false,exporting4k:false};
 const $=id=>document.getElementById(id);
-const scene=new THREE.Scene();scene.background=new THREE.Color(0xf3f4f5);scene.fog=new THREE.Fog(0xf3f4f5,1100,2200);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x171b1f);scene.fog=new THREE.Fog(0x171b1f,1100,2200);
 const camera=new THREE.PerspectiveCamera(35,1,.1,10000);camera.position.set(350,270,430);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance',preserveDrawingBuffer:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2.5));
@@ -101,9 +101,9 @@ const textures={
  drawer:makeNoiseTexture('#fefefd',3,512,false),
  shoe:makeNoiseTexture('#fdfdfc',3,512,false),
  shelf:makeNoiseTexture('#ffffff',3,512,false),
- floor:makeNoiseTexture('#d8d2c7',11,512,false)
+ floor:makeNoiseTexture('#2a3036',9,512,false)
 };
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(1800,1800),new THREE.MeshPhysicalMaterial({color:0xd8d2c7,map:textures.floor,roughness:.9,metalness:0,clearcoat:0}));floor.rotation.x=-Math.PI/2;floor.position.y=-.7;floor.receiveShadow=true;scene.add(floor);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(1800,1800),new THREE.MeshPhysicalMaterial({color:0x2a3036,map:textures.floor,roughness:.92,metalness:0,clearcoat:0}));floor.rotation.x=-Math.PI/2;floor.position.y=-.7;floor.receiveShadow=true;scene.add(floor);
 const palette={body:0xffffff,back:0xffffff,front:0xffffff,door:0xffffff,drawer:0xffffff,shoe:0xffffff,shelf:0xffffff,metal:0xb9bec2};
 function materialKind(p){if(p.shape==='rod'||p.material==='metal')return'metal';if(p.action?.startsWith('gaveta'))return'drawer';if(p.action?.startsWith('sapateira'))return'shoe';if(/Prateleira|Colmeia/i.test(p.name||''))return'shelf';if(p.material==='back')return'back';if(p.material==='door')return'door';if(p.material==='front')return'front';return'mdf';}
 function materialFor(p){const kind=materialKind(p);if(kind==='metal')return new THREE.MeshPhysicalMaterial({color:palette.metal,metalness:.92,roughness:.2,clearcoat:.2,clearcoatRoughness:.14});const map=textures[kind]||textures.mdf;const color=kind==='mdf'?palette.body:palette[kind]||palette.body;const front=/^(front|door)$/.test(kind);return new THREE.MeshPhysicalMaterial({color,map,metalness:0,roughness:front?.5:.64,clearcoat:front?.1:.035,clearcoatRoughness:.4,ior:1.46,sheen:.015,sheenRoughness:.82});}
